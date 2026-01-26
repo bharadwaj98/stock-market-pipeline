@@ -1,0 +1,6 @@
+snowflake-connector-python 
+pandas 
+yfinance 
+kafka-python 
+dbt-snowflake 
+apache-airflow
