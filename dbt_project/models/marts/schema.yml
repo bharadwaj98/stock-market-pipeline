@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dim_company
+    columns:
+      - name: company_pk
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_stock_prices
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: company_pk
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_pk

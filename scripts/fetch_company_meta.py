@@ -83,7 +83,7 @@ def fetch_and_load_metadata():
         print(f"Snowflake Error: {e}")
     finally:
         cursor.close()
-        # Optional: Clean up local file
+        # Clean up local file
         if os.path.exists(file_name):
             os.remove(file_name)
 

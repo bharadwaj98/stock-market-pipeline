@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: stock_source
+    database: STOCK_DB
+    schema: RAW
+    tables:
+      - name: STOCK_PRICES_JSON
+      - name: COMPANY_INFO_JSON
