@@ -1,0 +1,71 @@
+[2026-02-02T15:03:04.981+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-02T15:03:05.005+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.dbt_test manual__2026-02-02T15:02:18.931562+00:00 [queued]>
+[2026-02-02T15:03:05.012+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.dbt_test manual__2026-02-02T15:02:18.931562+00:00 [queued]>
+[2026-02-02T15:03:05.013+0000] {taskinstance.py:2303} INFO - Starting attempt 1 of 2
+[2026-02-02T15:03:05.024+0000] {taskinstance.py:2327} INFO - Executing <Task(BashOperator): dbt_test> on 2026-02-02 15:02:18.931562+00:00
+[2026-02-02T15:03:05.030+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=552) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-02T15:03:05.032+0000] {standard_task_runner.py:63} INFO - Started process 553 to run task
+[2026-02-02T15:03:05.030+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'stock_market_batch_pipeline', 'dbt_test', 'manual__2026-02-02T15:02:18.931562+00:00', '--job-id', '8', '--raw', '--subdir', 'DAGS_FOLDER/stock_etl.py', '--cfg-path', '/tmp/tmpwnvyc8kz']
+[2026-02-02T15:03:05.033+0000] {standard_task_runner.py:91} INFO - Job 8: Subtask dbt_test
+[2026-02-02T15:03:05.045+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2026-02-02T15:03:05.073+0000] {task_command.py:426} INFO - Running <TaskInstance: stock_market_batch_pipeline.dbt_test manual__2026-02-02T15:02:18.931562+00:00 [running]> on host ff0fefa6cf5a
+[2026-02-02T15:03:05.141+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data_engineer' AIRFLOW_CTX_DAG_ID='stock_market_batch_pipeline' AIRFLOW_CTX_TASK_ID='dbt_test' AIRFLOW_CTX_EXECUTION_DATE='2026-02-02T15:02:18.931562+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-02T15:02:18.931562+00:00'
+[2026-02-02T15:03:05.141+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-02T15:03:05.153+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-02T15:03:05.154+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt test']
+[2026-02-02T15:03:05.162+0000] {subprocess.py:86} INFO - Output:
+[2026-02-02T15:03:06.830+0000] {subprocess.py:93} INFO - [0m15:03:06  Running with dbt=1.11.2
+[2026-02-02T15:03:07.618+0000] {subprocess.py:93} INFO - [0m15:03:07  Registered adapter: snowflake=1.11.1
+[2026-02-02T15:03:08.434+0000] {subprocess.py:93} INFO - [0m15:03:08  Found 4 models, 6 data tests, 2 sources, 639 macros
+[2026-02-02T15:03:08.437+0000] {subprocess.py:93} INFO - [0m15:03:08
+[2026-02-02T15:03:08.438+0000] {subprocess.py:93} INFO - [0m15:03:08  Concurrency: 1 threads (target='dev')
+[2026-02-02T15:03:08.439+0000] {subprocess.py:93} INFO - [0m15:03:08
+[2026-02-02T15:03:13.471+0000] {subprocess.py:93} INFO - [0m15:03:13  1 of 6 START test not_null_dim_company_company_pk .............................. [RUN]
+[2026-02-02T15:03:16.061+0000] {subprocess.py:93} INFO - [0m15:03:16  1 of 6 PASS not_null_dim_company_company_pk .................................... [[32mPASS[0m in 2.59s]
+[2026-02-02T15:03:16.064+0000] {subprocess.py:93} INFO - [0m15:03:16  2 of 6 START test not_null_fact_stock_prices_company_pk ........................ [RUN]
+[2026-02-02T15:03:18.605+0000] {subprocess.py:93} INFO - [0m15:03:18  2 of 6 PASS not_null_fact_stock_prices_company_pk .............................. [[32mPASS[0m in 2.54s]
+[2026-02-02T15:03:18.609+0000] {subprocess.py:93} INFO - [0m15:03:18  3 of 6 START test not_null_fact_stock_prices_transaction_id .................... [RUN]
+[2026-02-02T15:03:21.796+0000] {subprocess.py:93} INFO - [0m15:03:21  3 of 6 PASS not_null_fact_stock_prices_transaction_id .......................... [[32mPASS[0m in 3.18s]
+[2026-02-02T15:03:21.800+0000] {subprocess.py:93} INFO - [0m15:03:21  4 of 6 START test relationships_fact_stock_prices_company_pk__company_pk__ref_dim_company_  [RUN]
+[2026-02-02T15:03:24.064+0000] {subprocess.py:93} INFO - [0m15:03:24  4 of 6 PASS relationships_fact_stock_prices_company_pk__company_pk__ref_dim_company_  [[32mPASS[0m in 2.26s]
+[2026-02-02T15:03:24.071+0000] {subprocess.py:93} INFO - [0m15:03:24  5 of 6 START test unique_dim_company_company_pk ................................ [RUN]
+[2026-02-02T15:03:26.910+0000] {subprocess.py:93} INFO - [0m15:03:26  5 of 6 FAIL 5 unique_dim_company_company_pk .................................... [[31mFAIL 5[0m in 2.84s]
+[2026-02-02T15:03:26.914+0000] {subprocess.py:93} INFO - [0m15:03:26  6 of 6 START test unique_fact_stock_prices_transaction_id ...................... [RUN]
+[2026-02-02T15:03:29.068+0000] {subprocess.py:93} INFO - [0m15:03:29  6 of 6 FAIL 30 unique_fact_stock_prices_transaction_id ......................... [[31mFAIL 30[0m in 2.15s]
+[2026-02-02T15:03:29.075+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.076+0000] {subprocess.py:93} INFO - [0m15:03:29  Finished running 6 data tests in 0 hours 0 minutes and 20.64 seconds (20.64s).
+[2026-02-02T15:03:29.129+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.130+0000] {subprocess.py:93} INFO - [0m15:03:29  [31mCompleted with 2 errors, 0 partial successes, and 0 warnings:[0m
+[2026-02-02T15:03:29.130+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.131+0000] {subprocess.py:93} INFO - [0m15:03:29  [31mFailure in test unique_dim_company_company_pk (models/marts/schema.yml)[0m
+[2026-02-02T15:03:29.132+0000] {subprocess.py:93} INFO - [0m15:03:29    Got 5 results, configured to fail if != 0
+[2026-02-02T15:03:29.133+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.134+0000] {subprocess.py:93} INFO - [0m15:03:29    compiled code at target/compiled/dbt_project/models/marts/schema.yml/unique_dim_company_company_pk.sql
+[2026-02-02T15:03:29.134+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.135+0000] {subprocess.py:93} INFO - [0m15:03:29  [31mFailure in test unique_fact_stock_prices_transaction_id (models/marts/schema.yml)[0m
+[2026-02-02T15:03:29.136+0000] {subprocess.py:93} INFO - [0m15:03:29    Got 30 results, configured to fail if != 0
+[2026-02-02T15:03:29.137+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.137+0000] {subprocess.py:93} INFO - [0m15:03:29    compiled code at target/compiled/dbt_project/models/marts/schema.yml/unique_fact_stock_prices_transaction_id.sql
+[2026-02-02T15:03:29.138+0000] {subprocess.py:93} INFO - [0m15:03:29
+[2026-02-02T15:03:29.139+0000] {subprocess.py:93} INFO - [0m15:03:29  Done. PASS=4 WARN=0 ERROR=2 SKIP=0 NO-OP=0 TOTAL=6
+[2026-02-02T15:03:29.479+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-02-02T15:03:29.480+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-02T15:03:29.489+0000] {taskinstance.py:2890} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-02-02T15:03:29.505+0000] {taskinstance.py:1205} INFO - Marking task as UP_FOR_RETRY. dag_id=stock_market_batch_pipeline, task_id=dbt_test, execution_date=20260202T150218, start_date=20260202T150305, end_date=20260202T150329
+[2026-02-02T15:03:29.515+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 8 for task dbt_test (Bash command failed. The command returned a non-zero exit code 1.; 553)
+[2026-02-02T15:03:29.536+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2026-02-02T15:03:29.548+0000] {taskinstance.py:3482} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-02T15:03:29.551+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

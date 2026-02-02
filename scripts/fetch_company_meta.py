@@ -4,7 +4,7 @@ import os
 import snowflake.connector
 from datetime import datetime, timezone
 
-# CONFIGURATION (Same as your consumer)
+# CONFIGURATION
 SNOWFLAKE_USER = 'BHARADWAJ'
 SNOWFLAKE_PASSWORD = 'tempPassword@123'
 SNOWFLAKE_ACCOUNT = 'OAMDBRI-OXC72527' 
@@ -34,8 +34,6 @@ def fetch_and_load_metadata():
             t = yf.Ticker(ticker)
             info = t.info
             
-            # Map to the exact columns in your Snowflake Table
-            # Keys must match Table Column names (Case Insensitive)
             record = {
                 'TICKER': ticker,
                 'NAME': info.get('longName'),
@@ -49,26 +47,34 @@ def fetch_and_load_metadata():
         except Exception as e:
             print(f"Error fetching {ticker}: {e}")
 
-    # Generate filename
-    file_name = "data/company_meta_batch.json"
+    # --- PATH FIX FOR DOCKER vs LOCAL ---
+    # In Docker, we mounted data to /opt/airflow/data
+    if os.path.exists('/opt/airflow/data'):
+        file_path = '/opt/airflow/data/company_meta_batch.json'
+    else:
+        # Local Windows fallback
+        file_path = os.path.join(os.getcwd(), 'data', 'company_meta_batch.json')
+
+    print(f"Writing to: {file_path}")
 
     # Write to local JSON
-    with open(file_name, 'w') as f:
+    with open(file_path, 'w') as f:
         for record in data_list:
             f.write(json.dumps(record) + "\n")
             
-    print(f"Uploading {file_name} to Snowflake...")
+    print(f"Uploading {file_path} to Snowflake...")
     
     cursor = conn.cursor()
     try:
         # 1. PUT file to Stage
-        # Using abspath to ensure Windows paths work correctly
-        local_file_path = os.path.abspath(file_name).replace('\\', '/')
-        put_cmd = f"PUT file://{local_file_path} @RAW.LOCAL_STAGE AUTO_COMPRESS=TRUE"
+        # Use simple forward slashes for Snowflake PUT command
+        # (Snowflake doesn't like Windows backslashes in PUT paths)
+        snowflake_path = file_path.replace('\\', '/')
+        
+        put_cmd = f"PUT file://{snowflake_path} @RAW.LOCAL_STAGE AUTO_COMPRESS=TRUE"
         cursor.execute(put_cmd)
         
         # 2. COPY INTO Table
-        # Note: Using MATCH_BY_COLUMN_NAME just like you did for prices
         copy_cmd = """
         COPY INTO RAW.COMPANY_INFO_JSON 
         FROM @RAW.LOCAL_STAGE 
@@ -83,9 +89,9 @@ def fetch_and_load_metadata():
         print(f"Snowflake Error: {e}")
     finally:
         cursor.close()
-        # Clean up local file
-        if os.path.exists(file_name):
-            os.remove(file_name)
+        # Optional: Clean up
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
 if __name__ == "__main__":
     fetch_and_load_metadata()
