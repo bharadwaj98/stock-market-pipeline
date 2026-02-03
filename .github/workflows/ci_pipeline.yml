@@ -46,7 +46,7 @@ jobs:
   # JOB 2: Check dbt Models
   dbt-tests:
     runs-on: ubuntu-latest
-    needs: python-linting # Only run if Python checks pass
+    needs: python-linting
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -64,10 +64,16 @@ jobs:
           cd dbt_project
           dbt deps
 
+      # --- THIS IS THE NEW STEP ---
+      - name: Configure dbt Profile
+        run: |
+          # Overwrite the local profiles.yml with the CI specific one
+          cp ci_profiles.yml profiles.yml
+
       - name: dbt Debug (Test Connection)
         run: |
           cd dbt_project
-          # We point to the ci_profiles.yml file explicitly
+          # Now it reads the correct 'profiles.yml' from the root (..)
           dbt debug --profiles-dir .. --profile dbt_project --target ci
 
       - name: dbt Compile (Check SQL Syntax)
@@ -76,8 +82,6 @@ jobs:
           dbt compile --profiles-dir .. --profile dbt_project --target ci
 
       - name: dbt Run (Dry Run)
-        # In a real job, we might run this against a temporary schema
-        # For now, we will just run the tests to ensure logic is sound
         run: |
           cd dbt_project
           dbt test --profiles-dir .. --profile dbt_project --target ci
