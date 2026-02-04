@@ -3,42 +3,54 @@ import time
 import json
 from kafka import KafkaProducer
 from datetime import datetime
+import pandas as pd
 
-# Initialize Kafka Producer
 producer = KafkaProducer(
-    bootstrap_servers=['localhost:9092'],
+    bootstrap_servers=['host.docker.internal'],
     value_serializer=lambda x: json.dumps(x).encode('utf-8')
 )
 
-TICKERS = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
+# EXPANDED DATASET (Tech, Finance, Retail, Auto)
+TICKERS = [
+    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
+    'NVDA', 'JPM', 'V', 'WMT', 'PG'
+]
 
 def fetch_stock_data():
+    print(f"Tracking {len(TICKERS)} symbols...")
     while True:
         try:
-            # Fetch real-time data
-            data = yf.download(TICKERS, period="1d", interval="1m", progress=False)
+            # Download 1 minute interval data
+            data = yf.download(TICKERS, period="1d", interval="1m", progress=False, group_by='ticker')
             
-            # Use the latest available row
-            latest = data.iloc[-1]
+            current_time = datetime.now().isoformat()
             
             for ticker in TICKERS:
-                # Structure the data
-                # Note: yfinance format changes often, keeping it simple here
-                stock_record = {
-                    'ticker': ticker,
-                    'price': float(latest['Close'][ticker]),
-                    'timestamp': datetime.now().isoformat()
-                }
-                
-                # Send to Kafka Topic 'stock_prices'
-                producer.send('stock_prices', value=stock_record)
-                print(f"Sent: {stock_record}")
+                try:
+                    ticker_data = data[ticker].iloc[-1]
+                    
+                    # --- FIX: Replace NaN with None ---
+                    # This ensures JSON serializes it as null, not NaN
+                    record = ticker_data.to_dict()
+                    for key, value in record.items():
+                        if pd.isna(value):
+                            record[key] = None
+                    
+                    # Add Metadata
+                    record['ticker'] = ticker
+                    record['event_time'] = str(ticker_data.name)
+                    record['processing_time'] = current_time
+                    
+                    producer.send('stock_prices', value=record)
+                    print(f"Sent {ticker}")
+                except Exception as err:
+                    pass
             
             producer.flush()
-            time.sleep(10) # Wait 10 seconds before next fetch
+            time.sleep(10) 
             
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Global Error: {e}")
             time.sleep(5)
 
 if __name__ == "__main__":

@@ -1,26 +1,32 @@
+{{ config(
+    materialized='incremental',
+    unique_key='ticker' 
+) }}
+
 with source as (
     select * from {{ source('stock_source', 'COMPANY_INFO_JSON') }}
 ),
 
-deduplicated as (
+parsed as (
     select
-        ticker,
-        name as company_name,
-        sector,
-        industry,
-        market_cap,
-        ingestion_time,
-        -- Window function to identify the latest record per company
-        row_number() over (partition by ticker order by ingestion_time desc) as row_num
+        record_content:ticker::string as ticker,
+        -- Extracting nested JSON fields
+        record_content:raw_data:longName::string as company_name,
+        record_content:raw_data:sector::string as sector,
+        record_content:raw_data:industry::string as industry,
+        record_content:raw_data:marketCap::number as market_cap,
+        record_content:raw_data:currency::string as currency,
+        record_content:raw_data:website::string as website,
+        ingestion_time
     from source
 )
 
-select
-    ticker,
-    company_name,
-    sector,
-    industry,
-    market_cap,
-    ingestion_time
-from deduplicated
-where row_num = 1  -- Keep only the latest version
+select * from parsed
+
+-- 1. Filter for incremental runs
+{% if is_incremental() %}
+  WHERE ingestion_time > (SELECT max(ingestion_time) FROM {{ this }})
+{% endif %}
+
+-- 2. DEDUPLICATE: Keep only the latest row per ticker in this batch
+qualify row_number() over (partition by ticker order by ingestion_time desc) = 1

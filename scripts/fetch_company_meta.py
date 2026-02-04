@@ -25,7 +25,7 @@ conn = snowflake.connector.connect(
     schema=SCHEMA
 )
 
-TICKERS = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
+TICKERS = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'JPM', 'V', 'WMT', 'PG']
 
 def fetch_and_load_metadata():
     print("Fetching company metadata...")
@@ -37,15 +37,13 @@ def fetch_and_load_metadata():
             t = yf.Ticker(ticker)
             info = t.info
             
-            record = {
-                'TICKER': ticker,
-                'NAME': info.get('longName'),
-                'SECTOR': info.get('sector'),
-                'INDUSTRY': info.get('industry'),
-                'MARKET_CAP': info.get('marketCap')
+            # We wrap it to ensure we know which ticker it belongs to easily
+            wrapper = {
+                'ticker': ticker,
+                'raw_data': info,
+                'extracted_at': datetime.now(timezone.utc).isoformat()
             }
-            record['INGESTION_TIME'] = datetime.now(timezone.utc).isoformat()
-            data_list.append(record)
+            data_list.append(wrapper)
             print(f"Fetched info for {ticker}")
         except Exception as e:
             print(f"Error fetching {ticker}: {e}")
@@ -79,10 +77,9 @@ def fetch_and_load_metadata():
         
         # 2. COPY INTO Table
         copy_cmd = """
-        COPY INTO RAW.COMPANY_INFO_JSON 
+        COPY INTO RAW.COMPANY_INFO_JSON (RECORD_CONTENT)
         FROM @RAW.LOCAL_STAGE 
         FILE_FORMAT = (TYPE = 'JSON')
-        MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE
         PURGE = TRUE
         """
         cursor.execute(copy_cmd)
