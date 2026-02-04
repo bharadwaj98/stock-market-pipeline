@@ -1,5 +1,5 @@
 .env
-profiles.yml
+# profiles.yml
 venv/
 __pycache__/
 *.pyc
