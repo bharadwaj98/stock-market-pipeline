@@ -12,28 +12,34 @@ This project implements a robust **Hybrid Data Engineering Pipeline** that inges
 
 The goal was to build a cost-effective, scalable data warehouse using **Snowflake**, orchestrated by **Airflow** (running in Docker), with transformations managed by **dbt** (data build tool) following the **Star Schema** methodology.
 
-### 🏗 Architecture
+### 🏛️ Architecture
 ```mermaid
 graph LR
+    %% Define Styles
+    classDef source fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef ingestion fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+    classDef storage fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef orchestration fill:#ffebee,stroke:#c62828,stroke-width:2px;
+
     subgraph Sources
-        YF[yFinance API]
+        YF[yFinance API]:::source
     end
 
     subgraph Ingestion
-        Producer[Producer Script] -->|Real-time| Kafka[Apache Kafka]
-        Kafka --> Consumer[Consumer Script]
-        BatchScript[Fetch Meta Script] -->|Batch| LocalFiles[Local JSON]
+        Producer[Producer Script]:::ingestion -->|Real-time| Kafka[Apache Kafka]:::ingestion
+        Kafka --> Consumer[Consumer Script]:::ingestion
+        BatchScript[Fetch Meta Script]:::ingestion -->|Batch| LocalFiles[Local JSON]:::ingestion
         Consumer --> LocalFiles
     end
 
     subgraph Snowflake Data Cloud
-        Stage[Internal Stage]
-        Raw[Raw Tables]
-        Analytics[Star Schema]
+        Stage[Internal Stage]:::storage
+        Raw[Raw Tables]:::storage
+        Analytics[Star Schema]:::storage
     end
 
     subgraph Orchestration
-        Airflow[Apache Airflow]
+        Airflow[Apache Airflow]:::orchestration
     end
 
     LocalFiles -->|PUT Command| Stage
@@ -41,7 +47,10 @@ graph LR
     Raw -->|dbt Transformation| Analytics
     Airflow --> BatchScript
     Airflow -->|dbt run| Analytics
+    Airflow -->|dbt test| Analytics
 ```
+
+---
 
 ## 🚀 Key Features
 *   **Hybrid Ingestion:**
