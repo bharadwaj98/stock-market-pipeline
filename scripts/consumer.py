@@ -25,9 +25,12 @@ conn = snowflake.connector.connect(
     schema=SCHEMA
 )
 
+# Get Bootstrap server from Env Var (set in docker-compose) or default to localhost (for local testing)
+BOOTSTRAP_SERVER = os.getenv('BOOTSTRAP_SERVER', 'localhost:9092')
+
 consumer = KafkaConsumer(
     'stock_prices',
-    bootstrap_servers=['localhost:9092'],
+    bootstrap_servers=[BOOTSTRAP_SERVER],
     auto_offset_reset='earliest',
     enable_auto_commit=True,
     group_id='snowflake-group',
@@ -39,6 +42,9 @@ buffer = []
 
 def upload_to_snowflake(data_buffer):
     file_name = f"data/stock_batch_{len(data_buffer)}.json"
+    
+    # Ensure the data directory exists to prevent FileNotFoundError
+    os.makedirs(os.path.dirname(file_name), exist_ok=True)
     
     # 1. Write buffer to local JSON file
     with open(file_name, 'w') as f:
@@ -62,10 +68,9 @@ def upload_to_snowflake(data_buffer):
         
         # Load into Table
         copy_cmd = """
-        COPY INTO RAW.STOCK_PRICES_JSON 
+        COPY INTO RAW.STOCK_PRICES_JSON (RECORD_CONTENT)
         FROM @RAW.LOCAL_STAGE 
         FILE_FORMAT = (TYPE = 'JSON')
-        MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE
         PURGE = TRUE
         """
         cursor.execute(copy_cmd)
@@ -73,9 +78,9 @@ def upload_to_snowflake(data_buffer):
     finally:
         cursor.close()
         
-    # 3. Clean up local file
-    if os.path.exists(file_name):
-        os.remove(file_name)
+        # 3. Clean up local file
+        if os.path.exists(file_name):
+            os.remove(file_name)
 
 # Main Loop
 print("Listening for messages...")

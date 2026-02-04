@@ -46,6 +46,34 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: stock-producer
+    depends_on:
+      - kafka
+    # Override CMD to run producer
+    command: python scripts/producer.py
+    environment:
+      # Tell producer to look for kafka at 'kafka:9092' (internal docker network)
+      BOOTSTRAP_SERVER: kafka:9092 
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: stock-consumer
+    depends_on:
+      - kafka
+    # Override CMD to run consumer
+    command: python scripts/consumer.py
+    # Mount data folder so we can see the json files if needed (optional)
+    volumes:
+      - ./data:/app/data
+    environment:               # <--- ADD THIS SECTION
+      BOOTSTRAP_SERVER: kafka:9092
+
   # --- AIRFLOW SERVICES ---
   postgres:
     image: postgres:13

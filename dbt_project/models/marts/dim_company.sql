@@ -10,5 +10,8 @@ select
     company_name,
     sector,
     industry,
-    market_cap
+    market_cap,
+    currency, -- New Field
+    website   -- New Field
 from staging
+qualify row_number() over (partition by ticker order by ingestion_time desc) = 1
