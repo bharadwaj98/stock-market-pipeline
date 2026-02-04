@@ -1,4 +1,3 @@
-```markdown
 # 📈 End-to-End Hybrid Stock Market Data Engineering Pipeline
 
 ![CI/CD Status](https://github.com/bharadwaj98/stock-market-pipeline/actions/workflows/ci_pipeline.yml/badge.svg)
@@ -158,4 +157,3 @@ The project includes a GitHub Actions pipeline that ensures code quality.
 *   Visualize data using Streamlit or Tableau connected to Snowflake.
 *   Deploy Airflow to AWS MWAA or Kubernetes.
 *   Implement "Incremental Models" in dbt for larger datasets.
-```
