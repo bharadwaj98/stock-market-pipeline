@@ -16,10 +16,11 @@ The goal was to build a cost-effective, scalable data warehouse using **Snowflak
 ```mermaid
 graph LR
     %% Define Styles
-    classDef source fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef ingestion fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
-    classDef storage fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
-    classDef orchestration fill:#ffebee,stroke:#c62828,stroke-width:2px;
+    %% Added 'color:#000' to force black text regardless of viewer theme
+    classDef source fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000,font-weight:bold;
+    classDef ingestion fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#000,font-weight:bold;
+    classDef storage fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000,font-weight:bold;
+    classDef orchestration fill:#ffebee,stroke:#c62828,stroke-width:2px,color:#000,font-weight:bold;
 
     subgraph Sources
         YF[yFinance API]:::source
@@ -47,7 +48,6 @@ graph LR
     Raw -->|dbt Transformation| Analytics
     Airflow --> BatchScript
     Airflow -->|dbt run| Analytics
-    Airflow -->|dbt test| Analytics
 ```
 
 ---
