@@ -69,6 +69,8 @@ services:
     command: webserver
     ports:
       - "8085:8080"
+    env_file:
+      - .env
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
@@ -83,6 +85,8 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
+    env_file:
+      - .env
     depends_on:
       postgres:
         condition: service_started

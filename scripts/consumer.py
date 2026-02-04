@@ -1,16 +1,19 @@
 import json
 import os
 from kafka import KafkaConsumer
+from dotenv import load_dotenv
 import snowflake.connector
 from datetime import datetime, timezone
 
+load_dotenv() 
+
 # CONFIGURATION
-SNOWFLAKE_USER = 'BHARADWAJ'
-SNOWFLAKE_PASSWORD = 'tempPassword@123'
-SNOWFLAKE_ACCOUNT = 'OAMDBRI-OXC72527' # e.g. xy12345.us-east-1
-WAREHOUSE = 'COMPUTE_WH'
-DATABASE = 'STOCK_DB'
-SCHEMA = 'RAW'
+SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
+SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
+SNOWFLAKE_ACCOUNT = os.getenv('SNOWFLAKE_ACCOUNT')
+WAREHOUSE = os.getenv('SNOWFLAKE_WAREHOUSE')
+DATABASE = os.getenv('SNOWFLAKE_DATABASE')
+SCHEMA = os.getenv('SNOWFLAKE_SCHEMA')
 
 # Initialize Snowflake Connection
 conn = snowflake.connector.connect(

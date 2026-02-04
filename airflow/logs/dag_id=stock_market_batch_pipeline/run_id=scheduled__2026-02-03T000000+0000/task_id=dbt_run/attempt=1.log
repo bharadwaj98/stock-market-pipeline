@@ -1,0 +1,42 @@
+[2026-02-04T10:17:50.737+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-04T10:17:50.767+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.dbt_run scheduled__2026-02-03T00:00:00+00:00 [queued]>
+[2026-02-04T10:17:50.775+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.dbt_run scheduled__2026-02-03T00:00:00+00:00 [queued]>
+[2026-02-04T10:17:50.776+0000] {taskinstance.py:2303} INFO - Starting attempt 1 of 2
+[2026-02-04T10:17:50.788+0000] {taskinstance.py:2327} INFO - Executing <Task(BashOperator): dbt_run> on 2026-02-03 00:00:00+00:00
+[2026-02-04T10:17:50.794+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=247) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-04T10:17:50.796+0000] {standard_task_runner.py:63} INFO - Started process 248 to run task
+[2026-02-04T10:17:50.794+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'stock_market_batch_pipeline', 'dbt_run', 'scheduled__2026-02-03T00:00:00+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/stock_etl.py', '--cfg-path', '/tmp/tmpu86iol5a']
+[2026-02-04T10:17:50.797+0000] {standard_task_runner.py:91} INFO - Job 4: Subtask dbt_run
+[2026-02-04T10:17:50.808+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2026-02-04T10:17:50.838+0000] {task_command.py:426} INFO - Running <TaskInstance: stock_market_batch_pipeline.dbt_run scheduled__2026-02-03T00:00:00+00:00 [running]> on host 146d39896f07
+[2026-02-04T10:17:50.906+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data_engineer' AIRFLOW_CTX_DAG_ID='stock_market_batch_pipeline' AIRFLOW_CTX_TASK_ID='dbt_run' AIRFLOW_CTX_EXECUTION_DATE='2026-02-03T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-02-03T00:00:00+00:00'
+[2026-02-04T10:17:50.907+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-04T10:17:50.919+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-04T10:17:50.920+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt run']
+[2026-02-04T10:17:50.928+0000] {subprocess.py:86} INFO - Output:
+[2026-02-04T10:17:52.925+0000] {subprocess.py:93} INFO - [0m10:17:52  Running with dbt=1.11.2
+[2026-02-04T10:17:53.803+0000] {subprocess.py:93} INFO - [0m10:17:53  Registered adapter: snowflake=1.11.1
+[2026-02-04T10:17:54.680+0000] {subprocess.py:93} INFO - [0m10:17:54  Found 4 models, 6 data tests, 2 sources, 639 macros
+[2026-02-04T10:17:54.683+0000] {subprocess.py:93} INFO - [0m10:17:54
+[2026-02-04T10:17:54.684+0000] {subprocess.py:93} INFO - [0m10:17:54  Concurrency: 1 threads (target='dev')
+[2026-02-04T10:17:54.685+0000] {subprocess.py:93} INFO - [0m10:17:54
+[2026-02-04T10:18:04.082+0000] {subprocess.py:93} INFO - [0m10:18:04  1 of 4 START sql table model STAGING.stg_company_info .......................... [RUN]
+[2026-02-04T10:18:07.020+0000] {subprocess.py:93} INFO - [0m10:18:07  1 of 4 OK created sql table model STAGING.stg_company_info ..................... [[32mSUCCESS 1[0m in 2.94s]
+[2026-02-04T10:18:07.024+0000] {subprocess.py:93} INFO - [0m10:18:07  2 of 4 START sql table model STAGING.stg_stock_prices .......................... [RUN]
+[2026-02-04T10:18:10.260+0000] {subprocess.py:93} INFO - [0m10:18:10  2 of 4 OK created sql table model STAGING.stg_stock_prices ..................... [[32mSUCCESS 1[0m in 3.23s]
+[2026-02-04T10:18:10.265+0000] {subprocess.py:93} INFO - [0m10:18:10  3 of 4 START sql table model ANALYTICS.dim_company ............................. [RUN]
+[2026-02-04T10:18:13.282+0000] {subprocess.py:93} INFO - [0m10:18:13  3 of 4 OK created sql table model ANALYTICS.dim_company ........................ [[32mSUCCESS 1[0m in 3.01s]
+[2026-02-04T10:18:13.289+0000] {subprocess.py:93} INFO - [0m10:18:13  4 of 4 START sql table model ANALYTICS.fact_stock_prices ....................... [RUN]
+[2026-02-04T10:18:16.320+0000] {subprocess.py:93} INFO - [0m10:18:16  4 of 4 OK created sql table model ANALYTICS.fact_stock_prices .................. [[32mSUCCESS 1[0m in 3.03s]
+[2026-02-04T10:18:16.327+0000] {subprocess.py:93} INFO - [0m10:18:16
+[2026-02-04T10:18:16.328+0000] {subprocess.py:93} INFO - [0m10:18:16  Finished running 4 table models in 0 hours 0 minutes and 21.64 seconds (21.64s).
+[2026-02-04T10:18:16.384+0000] {subprocess.py:93} INFO - [0m10:18:16
+[2026-02-04T10:18:16.385+0000] {subprocess.py:93} INFO - [0m10:18:16  [32mCompleted successfully[0m
+[2026-02-04T10:18:16.386+0000] {subprocess.py:93} INFO - [0m10:18:16
+[2026-02-04T10:18:16.387+0000] {subprocess.py:93} INFO - [0m10:18:16  Done. PASS=4 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=4
+[2026-02-04T10:18:16.781+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-02-04T10:18:16.783+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-04T10:18:16.804+0000] {taskinstance.py:1205} INFO - Marking task as SUCCESS. dag_id=stock_market_batch_pipeline, task_id=dbt_run, execution_date=20260203T000000, start_date=20260204T101750, end_date=20260204T101816
+[2026-02-04T10:18:16.845+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-02-04T10:18:16.861+0000] {taskinstance.py:3482} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-02-04T10:18:16.862+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

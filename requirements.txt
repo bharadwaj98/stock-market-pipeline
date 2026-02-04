@@ -3,3 +3,4 @@ yfinance
 kafka-python
 dbt-snowflake
 apache-airflow
+python-dotenv

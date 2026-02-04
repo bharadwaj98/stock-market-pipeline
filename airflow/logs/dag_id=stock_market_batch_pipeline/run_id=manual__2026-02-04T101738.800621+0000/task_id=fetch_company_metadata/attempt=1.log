@@ -1,0 +1,31 @@
+[2026-02-04T10:17:39.636+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-04T10:17:39.664+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.fetch_company_metadata manual__2026-02-04T10:17:38.800621+00:00 [queued]>
+[2026-02-04T10:17:39.672+0000] {taskinstance.py:2073} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: stock_market_batch_pipeline.fetch_company_metadata manual__2026-02-04T10:17:38.800621+00:00 [queued]>
+[2026-02-04T10:17:39.673+0000] {taskinstance.py:2303} INFO - Starting attempt 1 of 2
+[2026-02-04T10:17:39.684+0000] {taskinstance.py:2327} INFO - Executing <Task(BashOperator): fetch_company_metadata> on 2026-02-04 10:17:38.800621+00:00
+[2026-02-04T10:17:39.690+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=202) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-04T10:17:39.692+0000] {standard_task_runner.py:63} INFO - Started process 203 to run task
+[2026-02-04T10:17:39.690+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'stock_market_batch_pipeline', 'fetch_company_metadata', 'manual__2026-02-04T10:17:38.800621+00:00', '--job-id', '3', '--raw', '--subdir', 'DAGS_FOLDER/stock_etl.py', '--cfg-path', '/tmp/tmp0qrz2vt_']
+[2026-02-04T10:17:39.692+0000] {standard_task_runner.py:91} INFO - Job 3: Subtask fetch_company_metadata
+[2026-02-04T10:17:39.706+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2026-02-04T10:17:39.736+0000] {task_command.py:426} INFO - Running <TaskInstance: stock_market_batch_pipeline.fetch_company_metadata manual__2026-02-04T10:17:38.800621+00:00 [running]> on host 146d39896f07
+[2026-02-04T10:17:39.806+0000] {taskinstance.py:2644} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data_engineer' AIRFLOW_CTX_DAG_ID='stock_market_batch_pipeline' AIRFLOW_CTX_TASK_ID='fetch_company_metadata' AIRFLOW_CTX_EXECUTION_DATE='2026-02-04T10:17:38.800621+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-04T10:17:38.800621+00:00'
+[2026-02-04T10:17:39.807+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-04T10:17:39.818+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-04T10:17:39.820+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/***/scripts/fetch_company_meta.py']
+[2026-02-04T10:17:39.827+0000] {subprocess.py:86} INFO - Output:
+[2026-02-04T10:17:50.101+0000] {subprocess.py:93} INFO - Fetching company metadata...
+[2026-02-04T10:17:50.102+0000] {subprocess.py:93} INFO - Fetched info for AAPL
+[2026-02-04T10:17:50.102+0000] {subprocess.py:93} INFO - Fetched info for MSFT
+[2026-02-04T10:17:50.103+0000] {subprocess.py:93} INFO - Fetched info for GOOGL
+[2026-02-04T10:17:50.104+0000] {subprocess.py:93} INFO - Fetched info for AMZN
+[2026-02-04T10:17:50.104+0000] {subprocess.py:93} INFO - Fetched info for TSLA
+[2026-02-04T10:17:50.105+0000] {subprocess.py:93} INFO - Writing to: /opt/***/data/company_meta_batch.json
+[2026-02-04T10:17:50.105+0000] {subprocess.py:93} INFO - Uploading /opt/***/data/company_meta_batch.json to Snowflake...
+[2026-02-04T10:17:50.106+0000] {subprocess.py:93} INFO - Batch Upload success.
+[2026-02-04T10:17:50.941+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-02-04T10:17:50.942+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-04T10:17:50.961+0000] {taskinstance.py:1205} INFO - Marking task as SUCCESS. dag_id=stock_market_batch_pipeline, task_id=fetch_company_metadata, execution_date=20260204T101738, start_date=20260204T101739, end_date=20260204T101750
+[2026-02-04T10:17:51.000+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-02-04T10:17:51.019+0000] {taskinstance.py:3482} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-02-04T10:17:51.021+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
